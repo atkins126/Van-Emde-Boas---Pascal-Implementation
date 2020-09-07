@@ -2,23 +2,25 @@ unit TvebArbolUnit;
 
 interface
 
-uses System.Math;
+uses Math;
 
 type
   TvebNodo = class
   public
     iUniverso: Integer;
-    nSummary: TvebNodo;
-    nCluster: Array of TvebNodo;
     iMinimo: Integer;
     iMaximo: Integer;
+
+    nSummary: TvebNodo;
+    nCluster: Array of TvebNodo;
+
     constructor fnCreate(iUniversoPropuesto: integer);
   end;
 
   TvebArbol = class
   private
     nNodoRaiz: TvebNodo;
-    function fnRaizCuadrada(nNodo: TvebNodo): Double;
+    function lowerSquarenRoot(nNodo: TvebNodo): Double;
     function fnIndice(nNodo: TvebNodo; x: Integer; y: Integer): Integer;
     function fnLow(nNodo: TvebNodo; x: Integer): Integer;
     function fnHigh(nNodo: TvebNodo; x: Integer): Integer;
@@ -49,8 +51,9 @@ constructor TvebNodo.fnCreate(iUniversoPropuesto: integer);
 var
   iSubUniverso: Integer;
   i: Integer;
-  function fnRaizCuadrada(): Integer;
+  function higherSquareRoot(): Integer;
   begin
+    //Result := Trunc(Power(2, Ceil(Log2(iUniverso) / 2)));
     Result := Trunc(Sqrt(iUniverso));
   end;
 begin
@@ -65,7 +68,7 @@ begin
   end
   else
   begin
-    iSubUniverso := fnRaizCuadrada();
+    iSubUniverso := higherSquareRoot();
 
     nSummary := TvebNodo.fnCreate(iSubUniverso);
     SetLength(nCluster, iSubUniverso);
@@ -85,21 +88,22 @@ end;
 
 function TvebArbol.fnHigh(nNodo: TvebNodo; x: Integer): Integer;
 begin
-  Result := Trunc(Floor(x / fnRaizCuadrada(nNodo)));
+  Result := Trunc(Floor(x / lowerSquarenRoot(nNodo)));
 end;
 
 function TvebArbol.fnLow(nNodo: TvebNodo; x: Integer): Integer;
 begin
-  Result := x mod Trunc(fnRaizCuadrada(nNodo));
+  Result := x mod Trunc(lowerSquarenRoot(nNodo));
 end;
 
 function TvebArbol.fnIndice(nNodo: TvebNodo; x, y: Integer): Integer;
 begin
-  Result := Trunc(x * fnRaizCuadrada(nNodo) + y);
+  Result := Trunc(x * lowerSquarenRoot(nNodo) + y);
 end;
 
-function TvebArbol.fnRaizCuadrada(nNodo: TvebNodo): Double;
+function TvebArbol.lowerSquarenRoot(nNodo: TvebNodo): Double;
 begin
+  //Result := Trunc(Power(2, Floor(Log2(nNodo.iUniverso) / 2)));
   Result := Trunc(Sqrt(nNodo.iUniverso));
 end;
 
@@ -342,6 +346,24 @@ begin
         iHighDeX := fnHigh(nNodo, x);
         iLowDeX := fnLow(nNodo, x);
         fnEliminar_Helper(nNodo.nCluster[iHighDeX], iLowDeX);
+
+        {if nNodo.nCluster[iHighDeX].iMinimo = DEF_NULL then
+        begin
+          fnEliminar_Helper(nNodo.nSummary, iHighDeX);
+          if x = nNodo.iMaximo then
+          begin
+            summaryMax := nNodo.nSummary.iMaximo;
+            if summaryMax = DEF_NULL then
+              nNodo.iMaximo := nNodo.iMinimo
+            else
+              nNodo.iMaximo := index(nNodo, summaryMax, nNodo.nCluster[summaryMax].iMaximo);
+          end;
+        end
+        else
+          if x = nNodo.iMaximo then
+          begin
+            nNodo.iMaximo := index(nNodo, iHighDeX, nNodo.nCluster[iHighDeX].iMaximo);
+          end; }
       end
       else
       if x = nNodo.iMaximo then
