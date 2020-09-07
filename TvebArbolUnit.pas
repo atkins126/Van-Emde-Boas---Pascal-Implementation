@@ -39,7 +39,6 @@ type
   end;
 
 CONST
-  DEF_BASE_SIZE = 2;
   DEF_NULL = -1;
 
 implementation
@@ -126,7 +125,7 @@ var
   iMaxCluster: Integer;
   iClusterSucesor: Integer;
 begin
-  if DEF_BASE_SIZE = nNodo.iUniverso then
+  if 2 = nNodo.iUniverso then
   begin
     if (x = 0) and (nNodo.iMaximo = 1) then
     begin
@@ -187,7 +186,7 @@ var
   iMinCluster: Integer;
   iClusterPredecesor: Integer;
 begin
-  if DEF_BASE_SIZE = nNodo.iUniverso then
+  if 2 = nNodo.iUniverso then
   begin
     if (1 = x) and (0 = nNodo.iMinimo) then
     begin
@@ -254,7 +253,7 @@ begin
   if (x = nNodo.iMinimo) or (x = nNodo.iMaximo) then
     Result := True
   else
-    if DEF_BASE_SIZE = nNodo.iUniverso then
+    if 2 = nNodo.iUniverso then
       Result := False
     else
       Result := fnBuscar_Helper(nNodo.nCluster[fnHigh(nNodo, x)], fnLow(nNodo, x));
@@ -284,7 +283,7 @@ begin
     nNodo.iMinimo := iValorTemporal;
   end;
 
-  if (x > nNodo.iMinimo) and (nNodo.iUniverso > DEF_BASE_SIZE) then
+  if (x > nNodo.iMinimo) and (nNodo.iUniverso > 2) then
   begin
     iHighDeX := fnHigh(nNodo, x);
 		iLowDeX := fnLow(nNodo, x);
@@ -323,7 +322,7 @@ begin
     nNodo.iMaximo := DEF_NULL;
   end
   else
-    if nNodo.iUniverso = DEF_BASE_SIZE then
+    if nNodo.iUniverso = 2 then
     begin
       if x = 0 then
         nNodo.iMinimo := 1
