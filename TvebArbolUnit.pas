@@ -20,7 +20,7 @@ type
   TvebArbol = class
   private
     nNodoRaiz: TvebNodo;
-    function lowerSquarenRoot(nNodo: TvebNodo): Double;
+    function fnRaizCuadrada(nNodo: TvebNodo): Double;
     function fnIndice(nNodo: TvebNodo; x: Integer; y: Integer): Integer;
     function fnLow(nNodo: TvebNodo; x: Integer): Integer;
     function fnHigh(nNodo: TvebNodo; x: Integer): Integer;
@@ -51,7 +51,7 @@ constructor TvebNodo.fnCreate(iUniversoPropuesto: integer);
 var
   iSubUniverso: Integer;
   i: Integer;
-  function higherSquareRoot(): Integer;
+  function fnRaizCuadrada(): Integer;
   begin
     //Result := Trunc(Power(2, Ceil(Log2(iUniverso) / 2)));
     Result := Trunc(Sqrt(iUniverso));
@@ -68,7 +68,7 @@ begin
   end
   else
   begin
-    iSubUniverso := higherSquareRoot();
+    iSubUniverso := fnRaizCuadrada();
 
     nSummary := TvebNodo.fnCreate(iSubUniverso);
     SetLength(nCluster, iSubUniverso);
@@ -88,20 +88,20 @@ end;
 
 function TvebArbol.fnHigh(nNodo: TvebNodo; x: Integer): Integer;
 begin
-  Result := Trunc(Floor(x / lowerSquarenRoot(nNodo)));
+  Result := Trunc(Floor(x / fnRaizCuadrada(nNodo)));
 end;
 
 function TvebArbol.fnLow(nNodo: TvebNodo; x: Integer): Integer;
 begin
-  Result := x mod Trunc(lowerSquarenRoot(nNodo));
+  Result := x mod Trunc(fnRaizCuadrada(nNodo));
 end;
 
 function TvebArbol.fnIndice(nNodo: TvebNodo; x, y: Integer): Integer;
 begin
-  Result := Trunc(x * lowerSquarenRoot(nNodo) + y);
+  Result := Trunc(x * fnRaizCuadrada(nNodo) + y);
 end;
 
-function TvebArbol.lowerSquarenRoot(nNodo: TvebNodo): Double;
+function TvebArbol.fnRaizCuadrada(nNodo: TvebNodo): Double;
 begin
   //Result := Trunc(Power(2, Floor(Log2(nNodo.iUniverso) / 2)));
   Result := Trunc(Sqrt(nNodo.iUniverso));
